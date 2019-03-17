@@ -25,6 +25,7 @@ RDEPEND="
 	dev-python/rospkg
 "
 DEPEND="${RDEPEND}
+	ros-kinetic/catkin
 "
 
 SLOT="0"

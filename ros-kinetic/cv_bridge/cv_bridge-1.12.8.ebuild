@@ -16,7 +16,7 @@ LICENSE="BSD"
 KEYWORDS="~x86 ~amd64 ~arm ~arm64"
 IUSE="test"
 RDEPEND="
-	ros-kinetic/opencv3
+	media-libs/opencv
 	ros-kinetic/rosconsole
 	ros-kinetic/sensor_msgs
 	test? ( ros-kinetic/rostest )

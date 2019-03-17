@@ -14,7 +14,7 @@ LICENSE="BSD"
 
 KEYWORDS="~x86 ~amd64 ~arm ~arm64"
 RDEPEND="
-	ros-kinetic/opencv3
+	media-libs/opencv
 	ros-kinetic/sensor_msgs
 "
 DEPEND="${RDEPEND}
