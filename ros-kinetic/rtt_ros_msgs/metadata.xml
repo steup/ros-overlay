@@ -5,7 +5,7 @@
     This package provides .msg and .srv files for use with the rtt_ros_integration packages.
   </longdescription>
   <maintainer type="person">
-    <email>hunter@openrobotics.org</email>
+    <email>hallen@kns.com</email>
     <name>Hunter L. Allen</name>
   </maintainer>
   <upstream>
