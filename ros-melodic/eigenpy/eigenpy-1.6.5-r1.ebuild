@@ -24,7 +24,8 @@ DEPEND="${RDEPEND}
 	app-doc/doxygen
 	dev-vcs/git
 "
-
+PATCHES=( "${FILESDIR}/1.6.5-gentoo-boost.patch"
+		  "${FILESDIR}/1.6.5-gentoo-pkgconfig-path.patch" )
 SLOT="0"
 ROS_DISTRO="melodic"
 ROS_PREFIX="opt/ros/${ROS_DISTRO}"

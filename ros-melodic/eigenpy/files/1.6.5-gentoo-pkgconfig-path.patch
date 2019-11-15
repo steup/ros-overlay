@@ -1,0 +1,23 @@
+diff -ru eigenpy-1.6.5/cmake/pkg-config.cmake eigenpy-1.6.5.patched/cmake/pkg-config.cmake
+--- eigenpy-1.6.5/cmake/pkg-config.cmake	2019-11-09 11:54:43.000000000 +0100
++++ eigenpy-1.6.5.patched/cmake/pkg-config.cmake	2019-11-16 00:10:16.675764781 +0100
+@@ -147,7 +147,7 @@
+ 
+   INSTALL(
+     FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}${PKGCONFIG_POSTFIX}.pc"
+-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
++    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
+     PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE)
+ ENDMACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_DEBUG)
+ 
+--- eigenpy-1.6.5/cmake/pkg-config.cmake	2019-11-16 00:16:55.025767583 +0100
++++ eigenpy-1.6.5.patched/cmake/pkg-config.cmake	2019-11-16 00:18:56.225768435 +0100
+@@ -188,7 +188,7 @@
+ 
+   INSTALL(
+     FILES "${CMAKE_CURRENT_BINARY_DIR}/${_PKG_CONFIG_FILENAME}"
+-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
++    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig
+     PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE)
+ ENDMACRO(_SETUP_PROJECT_PKG_CONFIG_FINALIZE_OPTIMIZED)
+ 

@@ -1,0 +1,20 @@
+--- a/CMakeLists.txt	2019-11-13 23:00:00.978458377 +0100
++++ b/CMakeLists.txt	2019-11-13 22:52:09.478463390 +0100
+@@ -6,7 +6,7 @@
+ find_package(console_bridge REQUIRED)
+ find_package(urdfdom_headers REQUIRED)
+ 
+-find_package(catkin REQUIRED COMPONENTS cmake_modules urdf urdfdom_py)
++find_package(catkin REQUIRED COMPONENTS cmake_modules urdf)
+ 
+ find_package(TinyXML REQUIRED)
+ 
+@@ -20,7 +20,7 @@
+ catkin_package(
+   LIBRARIES ${PROJECT_NAME}
+   INCLUDE_DIRS include ${TinyXML_INCLUDE_DIRS}
+-  DEPENDS console_bridge urdfdom_headers urdfdom_py
++  DEPENDS console_bridge urdfdom_headers
+ )
+ 
+ add_library(${PROJECT_NAME} 

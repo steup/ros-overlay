@@ -28,6 +28,8 @@ DEPEND="${RDEPEND}
 	ros-melodic/urdf
 "
 
+PATCHES=( "${FILESDIR}/urdfdom_py_cmake.patch" )
+
 SLOT="0"
 ROS_DISTRO="melodic"
 ROS_PREFIX="opt/ros/${ROS_DISTRO}"
