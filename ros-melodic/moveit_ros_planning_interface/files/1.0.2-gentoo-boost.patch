@@ -1,0 +1,16 @@
+diff -ru moveit_ros_planning_interface-1.0.2/CMakeLists.txt moveit_ros_planning_interface-1.0.2.patched/CMakeLists.txt
+--- moveit_ros_planning_interface-1.0.2/CMakeLists.txt	2019-11-16 18:35:16.666458928 +0100
++++ moveit_ros_planning_interface-1.0.2.patched/CMakeLists.txt	2019-11-16 18:36:07.726457882 +0100
+@@ -29,11 +29,7 @@
+ find_package(PythonLibs "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}" REQUIRED)
+ 
+ find_package(Boost REQUIRED)
+-if(Boost_VERSION LESS 106700)
+-  set(BOOST_PYTHON_COMPONENT python)
+-elseif()
+-  set(BOOST_PYTHON_COMPONENT python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+-endif()
++set(BOOST_PYTHON_COMPONENT python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
+ 
+ find_package(Boost REQUIRED COMPONENTS
+   date_time

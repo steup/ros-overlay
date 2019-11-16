@@ -40,6 +40,8 @@ DEPEND="${RDEPEND}
 	dev-python/catkin_pkg
 "
 
+PATCHES=( "${FILESDIR}/1.0.2-gentoo-boost.patch" )
+
 SLOT="0"
 ROS_DISTRO="melodic"
 ROS_PREFIX="opt/ros/${ROS_DISTRO}"
