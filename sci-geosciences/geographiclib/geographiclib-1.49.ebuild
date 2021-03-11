@@ -6,7 +6,7 @@ EAPI=6
 inherit versionator
 inherit cmake-utils
 
-PYTHON_COMPAT=( python{2_7,3_4,3_5} )
+PYTHON_COMPAT=( python3_8 )
 
 inherit python-r1
 

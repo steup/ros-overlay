@@ -1,0 +1,596 @@
+diff --git a/include/ros/node_handle.h b/include/ros/node_handle.h
+index d084e5e07..845292c84 100644
+--- a/include/ros/node_handle.h
++++ b/include/ros/node_handle.h
+@@ -281,7 +281,7 @@ namespace ros
+ 
+      MyClass my_class;
+      ros::Publisher pub = handle.advertise<std_msgs::Empty>("my_topic", 1, 
+-                                                            boost::bind(&MyClass::connectCallback, my_class, _1));
++                                                            boost::bind(&MyClass::connectCallback, my_class, boost::placeholders::_1));
+      \endverbatim
+      *
+    *
+@@ -403,7 +403,7 @@ if (sub)  // Enter if subscriber is valid
+                        const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj, _1));
++    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj, boost::placeholders::_1));
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+   }
+@@ -414,7 +414,7 @@ if (sub)  // Enter if subscriber is valid
+                        const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj, _1));
++    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj, boost::placeholders::_1));
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+   }
+@@ -467,7 +467,7 @@ if (sub)  // Enter if subscriber is valid
+                        const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template init<M>(topic, queue_size, boost::bind(fp, obj, _1));
++    ops.template init<M>(topic, queue_size, boost::bind(fp, obj, boost::placeholders::_1));
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+   }
+@@ -477,7 +477,7 @@ if (sub)  // Enter if subscriber is valid
+                        const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template init<M>(topic, queue_size, boost::bind(fp, obj, _1));
++    ops.template init<M>(topic, queue_size, boost::bind(fp, obj, boost::placeholders::_1));
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+   }
+@@ -530,7 +530,7 @@ if (sub)  // Enter if subscriber is valid
+                        const boost::shared_ptr<T>& obj, const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj.get(), _1));
++    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj.get(), boost::placeholders::_1));
+     ops.tracked_object = obj;
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+@@ -541,7 +541,7 @@ if (sub)  // Enter if subscriber is valid
+                        const boost::shared_ptr<T>& obj, const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj.get(), _1));
++    ops.template initByFullCallbackType<M>(topic, queue_size, boost::bind(fp, obj.get(), boost::placeholders::_1));
+     ops.tracked_object = obj;
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+@@ -596,7 +596,7 @@ if (sub)  // Enter if subscriber is valid
+                        const boost::shared_ptr<T>& obj, const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template init<M>(topic, queue_size, boost::bind(fp, obj.get(), _1));
++    ops.template init<M>(topic, queue_size, boost::bind(fp, obj.get(), boost::placeholders::_1));
+     ops.tracked_object = obj;
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+@@ -607,7 +607,7 @@ if (sub)  // Enter if subscriber is valid
+                        const boost::shared_ptr<T>& obj, const TransportHints& transport_hints = TransportHints())
+   {
+     SubscribeOptions ops;
+-    ops.template init<M>(topic, queue_size, boost::bind(fp, obj.get(), _1));
++    ops.template init<M>(topic, queue_size, boost::bind(fp, obj.get(), boost::placeholders::_1));
+     ops.tracked_object = obj;
+     ops.transport_hints = transport_hints;
+     return subscribe(ops);
+@@ -879,7 +879,7 @@ if (service)  // Enter if advertised service is valid
+   ServiceServer advertiseService(const std::string& service, bool(T::*srv_func)(MReq &, MRes &), T *obj)
+   {
+     AdvertiseServiceOptions ops;
+-    ops.template init<MReq, MRes>(service, boost::bind(srv_func, obj, _1, _2));
++    ops.template init<MReq, MRes>(service, boost::bind(srv_func, obj, boost::placeholders::_1, boost::placeholders::_2));
+     return advertiseService(ops);
+   }
+ 
+@@ -924,7 +924,7 @@ if (service)  // Enter if advertised service is valid
+   ServiceServer advertiseService(const std::string& service, bool(T::*srv_func)(ServiceEvent<MReq, MRes>&), T *obj)
+   {
+     AdvertiseServiceOptions ops;
+-    ops.template initBySpecType<ServiceEvent<MReq, MRes> >(service, boost::bind(srv_func, obj, _1));
++    ops.template initBySpecType<ServiceEvent<MReq, MRes> >(service, boost::bind(srv_func, obj, boost::placeholders::_1));
+     return advertiseService(ops);
+   }
+ 
+@@ -970,7 +970,7 @@ if (service)  // Enter if advertised service is valid
+   ServiceServer advertiseService(const std::string& service, bool(T::*srv_func)(MReq &, MRes &), const boost::shared_ptr<T>& obj)
+   {
+     AdvertiseServiceOptions ops;
+-    ops.template init<MReq, MRes>(service, boost::bind(srv_func, obj.get(), _1, _2));
++    ops.template init<MReq, MRes>(service, boost::bind(srv_func, obj.get(), boost::placeholders::_1, boost::placeholders::_2));
+     ops.tracked_object = obj;
+     return advertiseService(ops);
+   }
+@@ -1017,7 +1017,7 @@ if (service)  // Enter if advertised service is valid
+   ServiceServer advertiseService(const std::string& service, bool(T::*srv_func)(ServiceEvent<MReq, MRes>&), const boost::shared_ptr<T>& obj)
+   {
+     AdvertiseServiceOptions ops;
+-    ops.template initBySpecType<ServiceEvent<MReq, MRes> >(service, boost::bind(srv_func, obj.get(), _1));
++    ops.template initBySpecType<ServiceEvent<MReq, MRes> >(service, boost::bind(srv_func, obj.get(), boost::placeholders::_1));
+     ops.tracked_object = obj;
+     return advertiseService(ops);
+   }
+@@ -1313,7 +1313,7 @@ if (service)  // Enter if advertised service is valid
+   Timer createTimer(Duration period, void(T::*callback)(const TimerEvent&) const, T* obj, 
+                     bool oneshot = false, bool autostart = true) const
+   {
+-    return createTimer(period, boost::bind(callback, obj, _1), oneshot, autostart);
++    return createTimer(period, boost::bind(callback, obj, boost::placeholders::_1), oneshot, autostart);
+   }
+ 
+   /**
+@@ -1333,7 +1333,7 @@ if (service)  // Enter if advertised service is valid
+   Timer createTimer(Duration period, void(T::*callback)(const TimerEvent&), T* obj, 
+                     bool oneshot = false, bool autostart = true) const
+   {
+-    return createTimer(period, boost::bind(callback, obj, _1), oneshot, autostart);
++    return createTimer(period, boost::bind(callback, obj, boost::placeholders::_1), oneshot, autostart);
+   }
+ 
+   /**
+@@ -1355,7 +1355,7 @@ if (service)  // Enter if advertised service is valid
+   Timer createTimer(Duration period, void(T::*callback)(const TimerEvent&), const boost::shared_ptr<T>& obj, 
+                     bool oneshot = false, bool autostart = true) const
+   {
+-    TimerOptions ops(period, boost::bind(callback, obj.get(), _1), 0);
++    TimerOptions ops(period, boost::bind(callback, obj.get(), boost::placeholders::_1), 0);
+     ops.tracked_object = obj;
+     ops.oneshot = oneshot;
+     ops.autostart = autostart;
+@@ -1410,7 +1410,7 @@ if (service)  // Enter if advertised service is valid
+   WallTimer createWallTimer(WallDuration period, void(T::*callback)(const WallTimerEvent&), T* obj, 
+                             bool oneshot = false, bool autostart = true) const
+   {
+-    return createWallTimer(period, boost::bind(callback, obj, _1), oneshot, autostart);
++    return createWallTimer(period, boost::bind(callback, obj, boost::placeholders::_1), oneshot, autostart);
+   }
+ 
+   /**
+@@ -1433,7 +1433,7 @@ if (service)  // Enter if advertised service is valid
+                             const boost::shared_ptr<T>& obj, 
+                             bool oneshot = false, bool autostart = true) const
+   {
+-    WallTimerOptions ops(period, boost::bind(callback, obj.get(), _1), 0);
++    WallTimerOptions ops(period, boost::bind(callback, obj.get(), boost::placeholders::_1), 0);
+     ops.tracked_object = obj;
+     ops.oneshot = oneshot;
+     ops.autostart = autostart;
+@@ -1489,7 +1489,7 @@ if (service)  // Enter if advertised service is valid
+   SteadyTimer createSteadyTimer(WallDuration period, void(T::*callback)(const SteadyTimerEvent&), T* obj,
+                                 bool oneshot = false, bool autostart = true) const
+   {
+-    return createSteadyTimer(period, boost::bind(callback, obj, _1), oneshot, autostart);
++    return createSteadyTimer(period, boost::bind(callback, obj, boost::placeholders::_1), oneshot, autostart);
+   }
+ 
+   /**
+@@ -1512,7 +1512,7 @@ if (service)  // Enter if advertised service is valid
+                                 const boost::shared_ptr<T>& obj,
+                                 bool oneshot = false, bool autostart = true) const
+   {
+-    SteadyTimerOptions ops(period, boost::bind(callback, obj.get(), _1), 0);
++    SteadyTimerOptions ops(period, boost::bind(callback, obj.get(), boost::placeholders::_1), 0);
+     ops.tracked_object = obj;
+     ops.oneshot = oneshot;
+     ops.autostart = autostart;
+diff --git a/include/ros/timer_manager.h b/include/ros/timer_manager.h
+index a938ae6d5..aba67f2af 100644
+--- a/include/ros/timer_manager.h
++++ b/include/ros/timer_manager.h
+@@ -341,7 +341,7 @@ int32_t TimerManager<T, D, E>::add(const D& period, const boost::function<void(c
+     {
+       boost::mutex::scoped_lock lock(waiting_mutex_);
+       waiting_.push_back(info->handle);
+-      waiting_.sort(boost::bind(&TimerManager::waitingCompare, this, _1, _2));
++      waiting_.sort(boost::bind(&TimerManager::waitingCompare, this, boost::placeholders::_1, boost::placeholders::_2));
+     }
+ 
+     new_timer_ = true;
+@@ -408,7 +408,7 @@ void TimerManager<T, D, E>::schedule(const TimerInfoPtr& info)
+ 
+     waiting_.push_back(info->handle);
+     // waitingCompare requires a lock on the timers_mutex_
+-    waiting_.sort(boost::bind(&TimerManager::waitingCompare, this, _1, _2));
++    waiting_.sort(boost::bind(&TimerManager::waitingCompare, this, boost::placeholders::_1, boost::placeholders::_2));
+   }
+ 
+   new_timer_ = true;
+@@ -482,7 +482,7 @@ void TimerManager<T, D, E>::setPeriod(int32_t handle, const D& period, bool rese
+     // In this case, let next_expected be updated only in updateNext
+     
+     info->period = period;
+-    waiting_.sort(boost::bind(&TimerManager::waitingCompare, this, _1, _2));
++    waiting_.sort(boost::bind(&TimerManager::waitingCompare, this, boost::placeholders::_1, boost::placeholders::_2));
+   }
+ 
+   new_timer_ = true;
+diff --git a/include/ros/topic.h b/include/ros/topic.h
+index dc62d1981..8a7e8dde6 100644
+--- a/include/ros/topic.h
++++ b/include/ros/topic.h
+@@ -87,7 +87,7 @@ boost::shared_ptr<M const> waitForMessage(const std::string& topic, NodeHandle&
+ {
+   SubscribeHelper<M> helper;
+   SubscribeOptions ops;
+-  ops.template init<M>(topic, 1, boost::bind(&SubscribeHelper<M>::callback, &helper, _1));
++  ops.template init<M>(topic, 1, boost::bind(&SubscribeHelper<M>::callback, &helper, boost::placeholders::_1));
+ 
+   waitForMessageImpl(ops, boost::bind(&SubscribeHelper<M>::hasMessage, &helper), nh, timeout);
+ 
+diff --git a/src/libros/connection.cpp b/src/libros/connection.cpp
+index fb97ecd21..473959dc1 100644
+--- a/src/libros/connection.cpp
++++ b/src/libros/connection.cpp
+@@ -74,13 +74,13 @@ void Connection::initialize(const TransportPtr& transport, bool is_server, const
+   header_func_ = header_func;
+   is_server_ = is_server;
+ 
+-  transport_->setReadCallback(boost::bind(&Connection::onReadable, this, _1));
+-  transport_->setWriteCallback(boost::bind(&Connection::onWriteable, this, _1));
+-  transport_->setDisconnectCallback(boost::bind(&Connection::onDisconnect, this, _1));
++  transport_->setReadCallback(boost::bind(&Connection::onReadable, this, boost::placeholders::_1));
++  transport_->setWriteCallback(boost::bind(&Connection::onWriteable, this, boost::placeholders::_1));
++  transport_->setDisconnectCallback(boost::bind(&Connection::onDisconnect, this, boost::placeholders::_1));
+ 
+   if (header_func)
+   {
+-    read(4, boost::bind(&Connection::onHeaderLengthRead, this, _1, _2, _3, _4));
++    read(4, boost::bind(&Connection::onHeaderLengthRead, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+   }
+ }
+ 
+@@ -368,7 +368,7 @@ void Connection::writeHeader(const M_string& key_vals, const WriteFinishedFunc&
+   memcpy(full_msg.get() + 4, buffer.get(), len);
+   *((uint32_t*)full_msg.get()) = len;
+ 
+-  write(full_msg, msg_len, boost::bind(&Connection::onHeaderWritten, this, _1), false);
++  write(full_msg, msg_len, boost::bind(&Connection::onHeaderWritten, this, boost::placeholders::_1), false);
+ }
+ 
+ void Connection::sendHeaderError(const std::string& error_msg)
+@@ -376,7 +376,7 @@ void Connection::sendHeaderError(const std::string& error_msg)
+   M_string m;
+   m["error"] = error_msg;
+ 
+-  writeHeader(m, boost::bind(&Connection::onErrorHeaderWritten, this, _1));
++  writeHeader(m, boost::bind(&Connection::onErrorHeaderWritten, this, boost::placeholders::_1));
+   sending_header_error_ = true;
+ }
+ 
+@@ -400,7 +400,7 @@ void Connection::onHeaderLengthRead(const ConnectionPtr& conn, const boost::shar
+     conn->drop(HeaderError);
+   }
+ 
+-  read(len, boost::bind(&Connection::onHeaderRead, this, _1, _2, _3, _4));
++  read(len, boost::bind(&Connection::onHeaderRead, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+ }
+ 
+ void Connection::onHeaderRead(const ConnectionPtr& conn, const boost::shared_array<uint8_t>& buffer, uint32_t size, bool success)
+@@ -455,7 +455,7 @@ void Connection::setHeaderReceivedCallback(const HeaderReceivedFunc& func)
+   header_func_ = func;
+ 
+   if (transport_->requiresHeader())
+-    read(4, boost::bind(&Connection::onHeaderLengthRead, this, _1, _2, _3, _4));
++    read(4, boost::bind(&Connection::onHeaderLengthRead, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+ }
+ 
+ std::string Connection::getCallerId()
+diff --git a/src/libros/connection_manager.cpp b/src/libros/connection_manager.cpp
+index 19fdb90cc..c2a98e9d5 100644
+--- a/src/libros/connection_manager.cpp
++++ b/src/libros/connection_manager.cpp
+@@ -66,7 +66,7 @@ void ConnectionManager::start()
+   tcpserver_transport_ = boost::make_shared<TransportTCP>(&poll_manager_->getPollSet());
+   if (!tcpserver_transport_->listen(network::getTCPROSPort(), 
+ 				    MAX_TCPROS_CONN_QUEUE, 
+-				    boost::bind(&ConnectionManager::tcprosAcceptConnection, this, _1)))
++				    boost::bind(&ConnectionManager::tcprosAcceptConnection, this, boost::placeholders::_1)))
+   {
+     ROS_FATAL("Listen on port [%d] failed", network::getTCPROSPort());
+     ROS_BREAK();
+@@ -142,7 +142,7 @@ void ConnectionManager::addConnection(const ConnectionPtr& conn)
+   boost::mutex::scoped_lock lock(connections_mutex_);
+ 
+   connections_.insert(conn);
+-  conn->addDropListener(boost::bind(&ConnectionManager::onConnectionDropped, this, _1));
++  conn->addDropListener(boost::bind(&ConnectionManager::onConnectionDropped, this, boost::placeholders::_1));
+ }
+ 
+ void ConnectionManager::onConnectionDropped(const ConnectionPtr& conn)
+@@ -190,7 +190,7 @@ void ConnectionManager::tcprosAcceptConnection(const TransportTCPPtr& transport)
+   ConnectionPtr conn(boost::make_shared<Connection>());
+   addConnection(conn);
+ 
+-  conn->initialize(transport, true, boost::bind(&ConnectionManager::onConnectionHeaderReceived, this, _1, _2));
++  conn->initialize(transport, true, boost::bind(&ConnectionManager::onConnectionHeaderReceived, this, boost::placeholders::_1, boost::placeholders::_2));
+ }
+ 
+ bool ConnectionManager::onConnectionHeaderReceived(const ConnectionPtr& conn, const Header& header)
+diff --git a/src/libros/poll_set.cpp b/src/libros/poll_set.cpp
+index 065a607b4..b23028a76 100644
+--- a/src/libros/poll_set.cpp
++++ b/src/libros/poll_set.cpp
+@@ -53,7 +53,7 @@ PollSet::PollSet()
+         ROS_FATAL("create_signal_pair() failed");
+     ROS_BREAK();
+   }
+-  addSocket(signal_pipe_[0], boost::bind(&PollSet::onLocalPipeEvents, this, _1));
++  addSocket(signal_pipe_[0], boost::bind(&PollSet::onLocalPipeEvents, this, boost::placeholders::_1));
+   addEvents(signal_pipe_[0], POLLIN);
+ }
+ 
+diff --git a/src/libros/service_client_link.cpp b/src/libros/service_client_link.cpp
+index 830b4edb4..333501a13 100644
+--- a/src/libros/service_client_link.cpp
++++ b/src/libros/service_client_link.cpp
+@@ -69,7 +69,7 @@ ServiceClientLink::~ServiceClientLink()
+ bool ServiceClientLink::initialize(const ConnectionPtr& connection)
+ {
+   connection_ = connection;
+-  dropped_conn_ = connection_->addDropListener(boost::bind(&ServiceClientLink::onConnectionDropped, this, _1));
++  dropped_conn_ = connection_->addDropListener(boost::bind(&ServiceClientLink::onConnectionDropped, this, boost::placeholders::_1));
+ 
+   return true;
+ }
+@@ -152,7 +152,7 @@ bool ServiceClientLink::handleHeader(const Header& header)
+     m["type"] = ss->getDataType();
+     m["md5sum"] = ss->getMD5Sum();
+     m["callerid"] = this_node::getName();
+-    connection_->writeHeader(m, boost::bind(&ServiceClientLink::onHeaderWritten, this, _1));
++    connection_->writeHeader(m, boost::bind(&ServiceClientLink::onHeaderWritten, this, boost::placeholders::_1));
+ 
+     ss->addServiceClientLink(shared_from_this());
+   }
+@@ -174,7 +174,7 @@ void ServiceClientLink::onConnectionDropped(const ConnectionPtr& conn)
+ void ServiceClientLink::onHeaderWritten(const ConnectionPtr& conn)
+ {
+   (void)conn;
+-  connection_->read(4, boost::bind(&ServiceClientLink::onRequestLength, this, _1, _2, _3, _4));
++  connection_->read(4, boost::bind(&ServiceClientLink::onRequestLength, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+ }
+ 
+ void ServiceClientLink::onRequestLength(const ConnectionPtr& conn, const boost::shared_array<uint8_t>& buffer, uint32_t size, bool success)
+@@ -198,7 +198,7 @@ void ServiceClientLink::onRequestLength(const ConnectionPtr& conn, const boost::
+     return;
+   }
+ 
+-  connection_->read(len, boost::bind(&ServiceClientLink::onRequest, this, _1, _2, _3, _4));
++  connection_->read(len, boost::bind(&ServiceClientLink::onRequest, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+ }
+ 
+ void ServiceClientLink::onRequest(const ConnectionPtr& conn, const boost::shared_array<uint8_t>& buffer, uint32_t size, bool success)
+@@ -226,7 +226,7 @@ void ServiceClientLink::onResponseWritten(const ConnectionPtr& conn)
+ 
+   if (persistent_)
+   {
+-    connection_->read(4, boost::bind(&ServiceClientLink::onRequestLength, this, _1, _2, _3, _4));
++    connection_->read(4, boost::bind(&ServiceClientLink::onRequestLength, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+   }
+   else
+   {
+@@ -237,7 +237,7 @@ void ServiceClientLink::onResponseWritten(const ConnectionPtr& conn)
+ void ServiceClientLink::processResponse(bool ok, const SerializedMessage& res)
+ {
+   (void)ok;
+-  connection_->write(res.buf, res.num_bytes, boost::bind(&ServiceClientLink::onResponseWritten, this, _1));
++  connection_->write(res.buf, res.num_bytes, boost::bind(&ServiceClientLink::onResponseWritten, this, boost::placeholders::_1));
+ }
+ 
+ 
+diff --git a/src/libros/service_server_link.cpp b/src/libros/service_server_link.cpp
+index 62fbbdcec..90cc4cce5 100644
+--- a/src/libros/service_server_link.cpp
++++ b/src/libros/service_server_link.cpp
+@@ -114,8 +114,8 @@ void ServiceServerLink::clearCalls()
+ bool ServiceServerLink::initialize(const ConnectionPtr& connection)
+ {
+   connection_ = connection;
+-  connection_->addDropListener(boost::bind(&ServiceServerLink::onConnectionDropped, this, _1));
+-  connection_->setHeaderReceivedCallback(boost::bind(&ServiceServerLink::onHeaderReceived, this, _1, _2));
++  connection_->addDropListener(boost::bind(&ServiceServerLink::onConnectionDropped, this, boost::placeholders::_1));
++  connection_->setHeaderReceivedCallback(boost::bind(&ServiceServerLink::onHeaderReceived, this, boost::placeholders::_1, boost::placeholders::_2));
+ 
+   M_string header;
+   header["service"] = service_name_;
+@@ -124,7 +124,7 @@ bool ServiceServerLink::initialize(const ConnectionPtr& connection)
+   header["persistent"] = persistent_ ? "1" : "0";
+   header.insert(extra_outgoing_header_values_.begin(), extra_outgoing_header_values_.end());
+ 
+-  connection_->writeHeader(header, boost::bind(&ServiceServerLink::onHeaderWritten, this, _1));
++  connection_->writeHeader(header, boost::bind(&ServiceServerLink::onHeaderWritten, this, boost::placeholders::_1));
+ 
+   return true;
+ }
+@@ -181,7 +181,7 @@ void ServiceServerLink::onRequestWritten(const ConnectionPtr& conn)
+ {
+   (void)conn;
+   //ros::WallDuration(0.1).sleep();
+-  connection_->read(5, boost::bind(&ServiceServerLink::onResponseOkAndLength, this, _1, _2, _3, _4));
++  connection_->read(5, boost::bind(&ServiceServerLink::onResponseOkAndLength, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+ }
+ 
+ void ServiceServerLink::onResponseOkAndLength(const ConnectionPtr& conn, const boost::shared_array<uint8_t>& buffer, uint32_t size, bool success)
+@@ -218,7 +218,7 @@ void ServiceServerLink::onResponseOkAndLength(const ConnectionPtr& conn, const b
+ 
+   if (len > 0)
+   {
+-    connection_->read(len, boost::bind(&ServiceServerLink::onResponse, this, _1, _2, _3, _4));
++    connection_->read(len, boost::bind(&ServiceServerLink::onResponse, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+   }
+   else
+   {
+@@ -322,7 +322,7 @@ void ServiceServerLink::processNextCall()
+       request = current_call_->req_;
+     }
+ 
+-    connection_->write(request.buf, request.num_bytes, boost::bind(&ServiceServerLink::onRequestWritten, this, _1));
++    connection_->write(request.buf, request.num_bytes, boost::bind(&ServiceServerLink::onRequestWritten, this, boost::placeholders::_1));
+   }
+ }
+ 
+diff --git a/src/libros/topic_manager.cpp b/src/libros/topic_manager.cpp
+index 40c3acac2..8f14d4e7f 100644
+--- a/src/libros/topic_manager.cpp
++++ b/src/libros/topic_manager.cpp
+@@ -78,12 +78,12 @@ void TopicManager::start()
+   connection_manager_ = ConnectionManager::instance();
+   xmlrpc_manager_ = XMLRPCManager::instance();
+ 
+-  xmlrpc_manager_->bind("publisherUpdate", boost::bind(&TopicManager::pubUpdateCallback, this, _1, _2));
+-  xmlrpc_manager_->bind("requestTopic", boost::bind(&TopicManager::requestTopicCallback, this, _1, _2));
+-  xmlrpc_manager_->bind("getBusStats", boost::bind(&TopicManager::getBusStatsCallback, this, _1, _2));
+-  xmlrpc_manager_->bind("getBusInfo", boost::bind(&TopicManager::getBusInfoCallback, this, _1, _2));
+-  xmlrpc_manager_->bind("getSubscriptions", boost::bind(&TopicManager::getSubscriptionsCallback, this, _1, _2));
+-  xmlrpc_manager_->bind("getPublications", boost::bind(&TopicManager::getPublicationsCallback, this, _1, _2));
++  xmlrpc_manager_->bind("publisherUpdate", boost::bind(&TopicManager::pubUpdateCallback, this, boost::placeholders::_1, boost::placeholders::_2));
++  xmlrpc_manager_->bind("requestTopic", boost::bind(&TopicManager::requestTopicCallback, this, boost::placeholders::_1, boost::placeholders::_2));
++  xmlrpc_manager_->bind("getBusStats", boost::bind(&TopicManager::getBusStatsCallback, this, boost::placeholders::_1, boost::placeholders::_2));
++  xmlrpc_manager_->bind("getBusInfo", boost::bind(&TopicManager::getBusInfoCallback, this, boost::placeholders::_1, boost::placeholders::_2));
++  xmlrpc_manager_->bind("getSubscriptions", boost::bind(&TopicManager::getSubscriptionsCallback, this, boost::placeholders::_1, boost::placeholders::_2));
++  xmlrpc_manager_->bind("getPublications", boost::bind(&TopicManager::getPublicationsCallback, this, boost::placeholders::_1, boost::placeholders::_2));
+ 
+   poll_manager_->addPollThreadListener(boost::bind(&TopicManager::processPublishQueues, this));
+ }
+diff --git a/src/libros/transport/transport_tcp.cpp b/src/libros/transport/transport_tcp.cpp
+index 946b714c5..91332a421 100644
+--- a/src/libros/transport/transport_tcp.cpp
++++ b/src/libros/transport/transport_tcp.cpp
+@@ -140,7 +140,7 @@ bool TransportTCP::initializeSocket()
+   if (poll_set_)
+   {
+     ROS_DEBUG("Adding tcp socket [%d] to pollset", sock_);
+-    poll_set_->addSocket(sock_, boost::bind(&TransportTCP::socketUpdate, this, _1), shared_from_this());
++    poll_set_->addSocket(sock_, boost::bind(&TransportTCP::socketUpdate, this, boost::placeholders::_1), shared_from_this());
+ #if defined(POLLRDHUP) // POLLRDHUP is not part of POSIX!
+     // This is needed to detect dead connections. #1704
+     poll_set_->addEvents(sock_, POLLRDHUP);
+diff --git a/src/libros/transport/transport_udp.cpp b/src/libros/transport/transport_udp.cpp
+index 77e5549c4..26719b6e2 100644
+--- a/src/libros/transport/transport_udp.cpp
++++ b/src/libros/transport/transport_udp.cpp
+@@ -298,7 +298,7 @@ bool TransportUDP::initializeSocket()
+   ROS_ASSERT(poll_set_ || (flags_ & SYNCHRONOUS));
+   if (poll_set_)
+   {
+-    poll_set_->addSocket(sock_, boost::bind(&TransportUDP::socketUpdate, this, _1), shared_from_this());
++    poll_set_->addSocket(sock_, boost::bind(&TransportUDP::socketUpdate, this, boost::placeholders::_1), shared_from_this());
+   }
+ 
+   return true;
+diff --git a/src/libros/transport_publisher_link.cpp b/src/libros/transport_publisher_link.cpp
+index 82bd1400f..de36dedbc 100644
+--- a/src/libros/transport_publisher_link.cpp
++++ b/src/libros/transport_publisher_link.cpp
+@@ -82,11 +82,11 @@ bool TransportPublisherLink::initialize(const ConnectionPtr& connection)
+   // and disconnect when this class' reference count is decremented to 0. It increments
+   // then decrements the shared_from_this reference count around calls to the
+   // onConnectionDropped function, preventing a coredump in the middle of execution.
+-  connection_->addDropListener(Connection::DropSignal::slot_type(&TransportPublisherLink::onConnectionDropped, this, _1, _2).track(shared_from_this()));
++  connection_->addDropListener(Connection::DropSignal::slot_type(&TransportPublisherLink::onConnectionDropped, this, boost::placeholders::_1, boost::placeholders::_2).track(shared_from_this()));
+ 
+   if (connection_->getTransport()->requiresHeader())
+   {
+-    connection_->setHeaderReceivedCallback(boost::bind(&TransportPublisherLink::onHeaderReceived, this, _1, _2));
++    connection_->setHeaderReceivedCallback(boost::bind(&TransportPublisherLink::onHeaderReceived, this, boost::placeholders::_1, boost::placeholders::_2));
+ 
+     SubscriptionPtr parent = parent_.lock();
+     if (!parent)
+@@ -100,11 +100,11 @@ bool TransportPublisherLink::initialize(const ConnectionPtr& connection)
+     header["callerid"] = this_node::getName();
+     header["type"] = parent->datatype();
+     header["tcp_nodelay"] = transport_hints_.getTCPNoDelay() ? "1" : "0";
+-    connection_->writeHeader(header, boost::bind(&TransportPublisherLink::onHeaderWritten, this, _1));
++    connection_->writeHeader(header, boost::bind(&TransportPublisherLink::onHeaderWritten, this, boost::placeholders::_1));
+   }
+   else
+   {
+-    connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, _1, _2, _3, _4));
++    connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+   }
+ 
+   return true;
+@@ -144,7 +144,7 @@ bool TransportPublisherLink::onHeaderReceived(const ConnectionPtr& conn, const H
+     retry_timer_handle_ = -1;
+   }
+ 
+-  connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, _1, _2, _3, _4));
++  connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+ 
+   return true;
+ }
+@@ -162,7 +162,7 @@ void TransportPublisherLink::onMessageLength(const ConnectionPtr& conn, const bo
+   if (!success)
+   {
+     if (connection_)
+-      connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, _1, _2, _3, _4));
++      connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+     return;
+   }
+ 
+@@ -181,7 +181,7 @@ void TransportPublisherLink::onMessageLength(const ConnectionPtr& conn, const bo
+     return;
+   }
+ 
+-  connection_->read(len, boost::bind(&TransportPublisherLink::onMessage, this, _1, _2, _3, _4));
++  connection_->read(len, boost::bind(&TransportPublisherLink::onMessage, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+ }
+ 
+ void TransportPublisherLink::onMessage(const ConnectionPtr& conn, const boost::shared_array<uint8_t>& buffer, uint32_t size, bool success)
+@@ -198,7 +198,7 @@ void TransportPublisherLink::onMessage(const ConnectionPtr& conn, const boost::s
+ 
+   if (success || !connection_->getTransport()->requiresHeader())
+   {
+-    connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, _1, _2, _3, _4));
++    connection_->read(4, boost::bind(&TransportPublisherLink::onMessageLength, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3, boost::placeholders::_4));
+   }
+ }
+ 
+@@ -282,7 +282,7 @@ void TransportPublisherLink::onConnectionDropped(const ConnectionPtr& conn, Conn
+       // shared_from_this() shared_ptr is used to ensure TransportPublisherLink is not
+       // destroyed in the middle of onRetryTimer execution
+       retry_timer_handle_ = getInternalTimerManager()->add(WallDuration(retry_period_),
+-          boost::bind(&TransportPublisherLink::onRetryTimer, this, _1), getInternalCallbackQueue().get(),
++          boost::bind(&TransportPublisherLink::onRetryTimer, this, boost::placeholders::_1), getInternalCallbackQueue().get(),
+           shared_from_this(), false);
+     }
+     else
+diff --git a/src/libros/transport_subscriber_link.cpp b/src/libros/transport_subscriber_link.cpp
+index 8e57adaa8..686c7849b 100644
+--- a/src/libros/transport_subscriber_link.cpp
++++ b/src/libros/transport_subscriber_link.cpp
+@@ -57,7 +57,7 @@ TransportSubscriberLink::~TransportSubscriberLink()
+ bool TransportSubscriberLink::initialize(const ConnectionPtr& connection)
+ {
+   connection_ = connection;
+-  dropped_conn_ = connection_->addDropListener(boost::bind(&TransportSubscriberLink::onConnectionDropped, this, _1));
++  dropped_conn_ = connection_->addDropListener(boost::bind(&TransportSubscriberLink::onConnectionDropped, this, boost::placeholders::_1));
+ 
+   return true;
+ }
+@@ -112,7 +112,7 @@ bool TransportSubscriberLink::handleHeader(const Header& header)
+   m["callerid"] = this_node::getName();
+   m["latching"] = pt->isLatching() ? "1" : "0";
+   m["topic"] = topic_;
+-  connection_->writeHeader(m, boost::bind(&TransportSubscriberLink::onHeaderWritten, this, _1));
++  connection_->writeHeader(m, boost::bind(&TransportSubscriberLink::onHeaderWritten, this, boost::placeholders::_1));
+ 
+   pt->addSubscriberLink(shared_from_this());
+ 
+@@ -170,7 +170,7 @@ void TransportSubscriberLink::startMessageWrite(bool immediate_write)
+ 
+   if (m.num_bytes > 0)
+   {
+-    connection_->write(m.buf, m.num_bytes, boost::bind(&TransportSubscriberLink::onMessageWritten, this, _1), immediate_write);
++    connection_->write(m.buf, m.num_bytes, boost::bind(&TransportSubscriberLink::onMessageWritten, this, boost::placeholders::_1), immediate_write);
+   }
+ }
+ 

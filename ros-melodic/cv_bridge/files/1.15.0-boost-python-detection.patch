@@ -1,0 +1,18 @@
+diff -u b/CMakeLists.txt a/CMakeLists.txt
+--- b/CMakeLists.txt	2021-03-11 10:35:44.473588739 +0100
++++ a/CMakeLists.txt	2021-03-11 10:34:27.311529407 +0100
+@@ -6,13 +6,7 @@
+ if(NOT ANDROID)
+   find_package(PythonLibs)
+ 
+-  if(PYTHONLIBS_VERSION_STRING VERSION_LESS "3.8")
+-    # Debian Buster
+-    find_package(Boost REQUIRED python37)
+-  else()
+-    # Ubuntu Focal
+-    find_package(Boost REQUIRED python)
+-  endif()
++  find_package(Boost REQUIRED python38)
+ else()
+ find_package(Boost REQUIRED)
+ endif()
