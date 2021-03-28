@@ -17,7 +17,7 @@ RDEPEND="
 	sys-kernel/dkms
 	dev-libs/openssl
 	virtual/libusb:1
-	sys-fs/udev
+	virtual/udev
 "
 DEPEND="${RDEPEND}
 	ros-melodic/catkin
