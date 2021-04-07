@@ -34,7 +34,7 @@ RDEPEND="
 	ros-melodic/tf2_ros
 	test? ( ros-melodic/rostest )
 	dev-cpp/eigen
-	sci-libs/pcl
+	sci-libs/pcl[qhull]
 "
 DEPEND="${RDEPEND}
 	ros-melodic/catkin
